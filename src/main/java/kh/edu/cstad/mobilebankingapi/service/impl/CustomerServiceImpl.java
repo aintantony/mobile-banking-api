@@ -78,7 +78,6 @@ public class CustomerServiceImpl implements CustomerService {
 
         customer = customerRepository.save(customer);
 
-
         return customerMapper.toCustomerResponse(customer);
     }
 }

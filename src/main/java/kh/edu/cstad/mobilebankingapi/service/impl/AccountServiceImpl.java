@@ -37,7 +37,6 @@ public class AccountServiceImpl implements AccountService {
         Customer customer = customerRepository.findByPhoneNumber(request.phoneNumber())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found"));
 
-        // validation account type
         AccountType accountType = accountTypeRepository.findAccountTypeByTypeName(request.accountType().toUpperCase(Locale.ROOT))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Account type not found"));
 
@@ -73,7 +72,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountResponse findAccountByActNo(String actNo) {
 
-        return accountRepository.findAccountByActNo(actNo)
+        return accountRepository.findByActNo(actNo)
                 .filter(account -> account.getIsDeleted().equals(false))
                 .map(accountMapper::accountToAccountResponse)
                 .orElseThrow(()  -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found"));
@@ -81,7 +80,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void disableAccountByActNo(String actNo) {
-        Account accountToDelete = accountRepository.findAccountByActNo(actNo)
+        Account accountToDelete = accountRepository.findByActNo(actNo)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found"));
         accountToDelete.setIsDeleted(true);
 
@@ -90,7 +89,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void deleteAccountByActNo(String actNo) {
-        Account deleteAccount = accountRepository.findAccountByActNo(actNo)
+        Account deleteAccount = accountRepository.findByActNo(actNo)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found"));
         accountRepository.delete(deleteAccount);
 
@@ -99,7 +98,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountResponse updateAccount(String actNo, UpdateAccountRequest request) {
 
-        Account accountToUpdate = accountRepository.findAccountByActNo(actNo)
+        Account accountToUpdate = accountRepository.findByActNo(actNo)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found"));
         accountMapper.toAccountPartially(request,accountToUpdate);
 
@@ -109,11 +108,11 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<AccountResponse> findAccountByCustomerPhone(CustomerPhoneNumberRequest customerPhoneNumberRequest) {
 
-        if (!customerRepository.existsCustomerByPhoneNumber(customerPhoneNumberRequest.phoneNumber())){
+        if (!customerRepository.existsByPhoneNumber(customerPhoneNumberRequest.phoneNumber())){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found");
         }
 
-        List<Account> accounts = accountRepository.findAccountByCustomer_PhoneNumber(customerPhoneNumberRequest.phoneNumber())
+        List<Account> accounts = accountRepository.findByCustomer_PhoneNumber(customerPhoneNumberRequest.phoneNumber())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found"));
 
         return accounts.stream()

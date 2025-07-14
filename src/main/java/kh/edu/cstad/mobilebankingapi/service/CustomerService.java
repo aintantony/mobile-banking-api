@@ -48,5 +48,7 @@ public interface CustomerService {
      * @return the updated customer's information as a response DTO
      */
     CustomerResponse updateByPhoneNumber(String phoneNumber, UpdateCustomerRequest updateCustomerRequest);
+
+    void disableByPhoneNumber(String phoneNumber);
 }
 

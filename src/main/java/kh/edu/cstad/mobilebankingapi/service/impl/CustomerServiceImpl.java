@@ -10,6 +10,7 @@ import kh.edu.cstad.mobilebankingapi.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -24,17 +25,18 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerResponse createNew(CreateCustomerRequest createCustomerRequest) {
 
-        if (customerRepository.existsCustomerByEmail(createCustomerRequest.email())) {
+        if (customerRepository.existsByEmail(createCustomerRequest.email())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,
                     "Email already exist");
         }
 
-        if (customerRepository.existsCustomerByPhoneNumber(createCustomerRequest.phoneNumber())) {
+        if (customerRepository.existsByPhoneNumber(createCustomerRequest.phoneNumber())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,
                     "Phone number already exist");
         }
 
         Customer customer = customerMapper.fromCreateCustomerRequest(createCustomerRequest);
+        customer.setIsDeleted(false);
 
         customerRepository.save(customer);
 
@@ -43,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<CustomerResponse> findAll() {
-        List<Customer> customers = customerRepository.findAll();
+        List<Customer> customers = customerRepository.findAllByIsDeletedFalse();
 
         return customers
                 .stream()
@@ -54,7 +56,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerResponse findByPhoneNumber(String phoneNumber) {
-        return customerRepository.findByPhoneNumber(phoneNumber)
+        return customerRepository.findCustomerByPhoneNumberAndIsDeletedFalse(phoneNumber)
                 .map(customerMapper::toCustomerResponse)
                 .orElseThrow(
                         () -> new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -79,5 +81,17 @@ public class CustomerServiceImpl implements CustomerService {
         customer = customerRepository.save(customer);
 
         return customerMapper.toCustomerResponse(customer);
+    }
+
+    @Transactional
+    @Override
+    public void disableByPhoneNumber(String phoneNumber) {
+
+        if (!customerRepository.existsByPhoneNumber(phoneNumber)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer phone number not exist");
+        }
+
+        customerRepository.disableByPhoneNumber(phoneNumber);
+
     }
 }

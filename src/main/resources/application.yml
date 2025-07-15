@@ -7,9 +7,9 @@ spring:
       enabled: true
 
   datasource:
-    url: POSTGRES_DB_URL
-    username: DB_USERANAME
-    password: DB_PASSWRD
+    url: jdbc:postgresql://localhost:5432/mobile_banking_db
+    username: aintantony
+    password: qwer
     driver-class-name: org.postgresql.Driver
 
   jpa:

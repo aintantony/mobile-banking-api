@@ -14,8 +14,8 @@ public interface AccountService {
     /**
      * Creates a new account based on the provided request data.
      *
-     * @param createAccountRequest the request object containing account details
-     * @return the response object containing created account information
+     * @param createAccountRequest {@link CreateAccountRequest} the request object containing account details
+     * @return the response object containing created account information - {@link AccountResponse}
      */
     AccountResponse createNew(CreateAccountRequest createAccountRequest);
 

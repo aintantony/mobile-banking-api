@@ -1,5 +1,6 @@
 package kh.edu.cstad.mbapi.service.impl;
 
+import ch.qos.logback.core.testUtil.RandomUtil;
 import kh.edu.cstad.mbapi.domain.Account;
 import kh.edu.cstad.mbapi.domain.AccountType;
 import kh.edu.cstad.mbapi.domain.Customer;
@@ -90,7 +91,7 @@ public class AccountServiceImpl implements AccountService {
         } else {
             String actNo;
             do {
-                actNo = String.format("%09d", new Random().nextInt(999_999_999));
+                actNo = String.valueOf(100_000_000 + new Random().nextInt(900_000_000));
             } while (accountRepository.existsByActNo(actNo));
             account.setActNo(actNo);
         }

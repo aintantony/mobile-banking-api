@@ -19,6 +19,7 @@ import java.util.List;
 @Entity
 @Table(name = "customer_segments")
 public class CustomerSegment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

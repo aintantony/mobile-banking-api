@@ -19,6 +19,7 @@ import java.util.List;
 @Entity
 @Table(name = "transaction_types")
 public class TransactionType {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

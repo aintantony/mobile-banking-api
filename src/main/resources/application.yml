@@ -1,3 +1,7 @@
+media:
+  server-path: /home/aintantony/ISTAD/full-stack-gen-1/spring-boot/media/
+  base-uri: http://localhost:8080/media/
+
 spring:
   application:
     name: mobile-banking-api
@@ -5,6 +9,11 @@ spring:
   threads:
     virtual:
       enabled: true
+
+  servlet:
+    multipart:
+      max-request-size: 20MB
+      max-file-size: 10MB
 
   datasource:
     url: BD_URL
@@ -25,4 +34,4 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:9999/realms/fswd-mb-api
+          issuer-uri: http://localhost:9999/realms/fswd-mbapi

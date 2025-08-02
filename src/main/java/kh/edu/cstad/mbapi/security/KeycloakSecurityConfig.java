@@ -49,6 +49,7 @@ public class KeycloakSecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/customers/**").hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/api/v1/customers/**").hasAnyRole("ADMIN")
                         .requestMatchers("/api/v1/accounts/**").hasAnyRole("USER")
+                        .requestMatchers("/media/**").permitAll()
                         .anyRequest().authenticated()
         );
 

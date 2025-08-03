@@ -1,5 +1,5 @@
 media:
-  server-path: /home/aintantony/ISTAD/full-stack-gen-1/spring-boot/media/
+  server-path: /home/aintantony/ISTAD/full-stack-gen-1/spring-boot/media-upload/
   base-uri: http://localhost:8080/media/
 
 spring:

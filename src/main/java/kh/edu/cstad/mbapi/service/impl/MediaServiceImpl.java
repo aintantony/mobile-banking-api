@@ -13,7 +13,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -57,18 +56,18 @@ public class MediaServiceImpl implements MediaService {
         }
 
         Media media = new Media();
-        media.setName(name);
+        media.setName(name+"."+extension);
         media.setExtension(extension);
         media.setMimeTypeFile(file.getContentType());
         media.setIsDeleted(false);
 
-        mediaRepository.save(media);
+        media = mediaRepository.save(media);
 
         return MediaResponse.builder()
                 .name(media.getName())
                 .extension(media.getExtension())
                 .mimeTypeFile(media.getMimeTypeFile())
-                .uri(baseUri)
+                .uri(baseUri + String.format("%s.%s", name, extension))
                 .size(file.getSize())
                 .build();
     }

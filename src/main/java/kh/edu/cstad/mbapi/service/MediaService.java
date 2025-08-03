@@ -29,8 +29,18 @@ public interface MediaService {
      */
     List<MediaResponse> uploadMultipleFiles(List<MultipartFile> files);
 
+    /**
+     * Downloads a media file by its name.
+     *
+     * @param fileName the name of the file to download
+     * @return a ResponseEntity containing the media file as a resource, with appropriate headers
+     */
     ResponseEntity<Resource> download(String fileName);
 
+    /**
+     * Deletes a media file by its name.
+     *
+     * @param fileName the name of the file to delete
+     */
     void deleteByName(String fileName);
-
 }
